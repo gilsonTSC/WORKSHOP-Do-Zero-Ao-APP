@@ -8,15 +8,23 @@ import TaskList from './src/components/TaskList';
 const AnimatedBtn = Animatable.createAnimatableComponent(TouchableOpacity);
 
 export default function App() {
-  const [task, setTask] = useState([
-    {key: 1, task: 'Comprar pao'},
-    {key: 2, task: 'Estudar react native'},
-    {key: 3, task: 'Ir na academia hoje a noite'},
-    {key: 4, task: 'Comprar chocolate'},
-    {key: 5, task: 'Terminar o imersão React'},
-  ]);
+  const [task, setTask] = useState([]);
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
+
+  function hanleAdd(){
+    if(input == '') return;
+
+    const data = {
+      key: input,
+      task: input
+    };
+    // Adicionar a tarefa
+    setTask([...task, data]);
+    setOpen(false);
+    setInput('');
+
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -53,7 +61,7 @@ export default function App() {
               value={input}
               onChangeText={(texto) => setInput(texto)}
             />
-            <TouchableOpacity style={styles.handleAdd} onPress={() => setOpen(false)}>
+            <TouchableOpacity style={styles.handleAdd} onPress={hanleAdd}>
               <Text style={styles.handleAddText}>Cadastrar</Text>
             </TouchableOpacity>
           </Animatable.View>
