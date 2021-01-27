@@ -1,7 +1,8 @@
-import React, {useState, useCallback} from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Modal, TextInput } from 'react-native';
+import React, {useState, useCallback, useEffect} from 'react';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Modal, TextInput} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import TaskList from './src/components/TaskList';
 
@@ -11,6 +12,31 @@ export default function App() {
   const [task, setTask] = useState([]);
   const [open, setOpen] = useState(false);
   const [input, setInput] = useState('');
+
+  //Buscando todas tarefas ao iniciar o app
+  useEffect(() => {
+
+    async function loadTasks(){
+      const taskStorage = await AsyncStorage.getItem('@task');
+      if(taskStorage){
+        setTask(JSON.parse(taskStorage));
+      }
+    }
+
+    loadTasks();
+
+  }, []);
+
+  //Salvando caso tenha alguma tarefa alterada
+  useEffect(() => {
+
+    async function saveTasks(){
+      await AsyncStorage.setItem('@task', JSON.stringify(task));
+    }
+
+    saveTasks();
+
+  }, [task]);
 
   function hanleAdd(){
     if(input == '') return;
