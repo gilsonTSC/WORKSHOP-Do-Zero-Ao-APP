@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList, Modal, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import * as Animatable from 'react-native-animatable';
@@ -26,6 +26,11 @@ export default function App() {
 
   }
 
+  const handleDelete = useCallback((data) => {
+    const find = task.filter(r => r.key !== data.key);
+    setTask(find);
+  })
+
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#171d31" barStyle="light-content"/>
@@ -39,7 +44,7 @@ export default function App() {
         showsHorizontalScrollIndicator={false}
         data={task}
         keyExtractor={(item) => String(item.key)}
-        renderItem={({item}) => <TaskList data={item}/> }
+        renderItem={({item}) => <TaskList data={item} handleDelete={handleDelete}/> }
       />
 
       <Modal animationType="slide" transparent={false} visible={open}>
