@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import * as Animatable from 'react-native-animatable';
 
 import TaskList from './src/components/TaskList';
+
+const AnimatedBtn = Animatable.createAnimatableComponent(TouchableOpacity);
 
 export default function App() {
   const[task, setTask] = useState([
@@ -29,9 +32,14 @@ export default function App() {
         renderItem={({item}) => <TaskList data={item}/> }
       />
 
-      <TouchableOpacity style={styles.fab}>
+      <AnimatedBtn 
+      style={styles.fab}
+      useNativeDriver
+      animation="bounceInUp"
+      duration={1500}
+      >
         <Ionicons name="ios-add" size={35} color="#FFF"/>
-      </TouchableOpacity>
+      </AnimatedBtn>
       
     </SafeAreaView>
   )
